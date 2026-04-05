@@ -30,7 +30,7 @@ exports.getGroupTransactions = async (req, res) => {
 
     const snapshot = await db.collection('transactions')
       .where('groupId', '==', groupId)
-      .orderBy('date', 'desc')
+      // .orderBy('date', 'desc')
       .get();
 
     if (snapshot.empty) {

@@ -1,0 +1,55 @@
+/* Container que ocupa a tela toda (100vh = 100% da altura da janela) */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5; /* Um cinza bem clarinho de fundo */
+}
+
+/* O cartão branco no meio da tela */
+.login-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Uma sombra suave */
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Ajuste o 'width' caso sua logo seja muito grande ou pequena */
+.login-logo {
+  width: 120px; 
+  margin-bottom: 20px;
+}
+
+.login-card h1 {
+  color: #333333;
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.login-card p {
+  color: #666666;
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+/* O Botão de Login */
+.btn-google {
+  background-color: #4285F4; /* Azul padrão do Google */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.btn-google:hover {
+  background-color: #357ae8; /* Azul um pouco mais escuro quando passa o mouse */
+}
