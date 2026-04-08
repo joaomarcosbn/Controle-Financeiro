@@ -120,6 +120,21 @@ export function Cards() {
               <h3>{card.name}</h3>
               <p>Fecha dia: <strong>{card.closingDay}</strong></p>
               <p>Vence dia: <strong>{card.dueDay}</strong></p>
+              <Link 
+                to={`/fatura/${card.id}`} 
+                style={{ 
+                  display: 'inline-block', 
+                  marginTop: '15px', 
+                  backgroundColor: '#4285F4', 
+                  color: 'white', 
+                  padding: '8px 12px', 
+                  borderRadius: '6px', 
+                  textDecoration: 'none', 
+                  fontSize: '14px' 
+                }}
+              >
+                Ver Fatura
+              </Link>
             </div>
           ))
         )}

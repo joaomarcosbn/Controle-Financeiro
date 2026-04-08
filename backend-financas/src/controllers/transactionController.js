@@ -78,3 +78,27 @@ exports.getGroupTransactions = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar transações', details: error.message });
   }
 };
+
+// Buscar transações de um cartão específico
+exports.getCardTransactions = async (req, res) => {
+  try {
+    const { cardId } = req.params;
+
+    const snapshot = await db.collection('transactions')
+      .where('creditCardId', '==', cardId)
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(200).json([]);
+    }
+
+    const transactions = [];
+    snapshot.forEach(doc => {
+      transactions.push({ id: doc.id, ...doc.data() });
+    });
+
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar faturas', details: error.message });
+  }
+};
