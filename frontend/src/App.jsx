@@ -4,14 +4,43 @@ import { Dashboard } from "./pages/Dashboard";
 import { Cards } from "./pages/Cards";
 import { Invoice } from "./pages/Invoice";
 
+// Importando o nosso Guarda!
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rota Pública (Qualquer um acessa) */}
         <Route path="/" element={<Login />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/cartoes" element={<Cards />} />
-        <Route path="/fatura/:cardId" element={<Invoice />} />
+
+        {/* Rotas Protegidas (Só passa quem está logado) */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        
+        <Route 
+          path="/cartoes" 
+          element={
+            <ProtectedRoute>
+              <Cards />
+            </ProtectedRoute>
+          } 
+        />
+        
+        <Route 
+          path="/fatura/:cardId" 
+          element={
+            <ProtectedRoute>
+              <Invoice />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </BrowserRouter>
   );
