@@ -23,11 +23,30 @@ export function Invoice() {
       if (response.ok && Array.isArray(data)) {
         setTransactions(data);
         
+        // Pega apenas os meses únicos
         const uniqueMonths = [...new Set(data.map(t => t.referenceMonth))].filter(Boolean);
-        uniqueMonths.sort();
+        
+        // Ordena cronologicamente (Ano primeiro, depois Mês)
+        uniqueMonths.sort((a, b) => {
+          // 'a' e 'b' são no formato "MM/YYYY" (ex: "04/2026")
+          const [mesA, anoA] = a.split('/');
+          const [mesB, anoB] = b.split('/');
+          
+          if (anoA !== anoB) {
+            return Number(anoA) - Number(anoB); // Ordena pelo ano
+          }
+          return Number(mesA) - Number(mesB); // Se o ano for igual, ordena pelo mês
+        });
+        
         setMonths(uniqueMonths);
         
-        if (uniqueMonths.length > 0) {
+        // Seleciona o mês atual por padrão (ou o último disponível)
+        const today = new Date();
+        const currentMonthString = `${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+        
+        if (uniqueMonths.includes(currentMonthString)) {
+          setSelectedMonth(currentMonthString);
+        } else if (uniqueMonths.length > 0) {
           setSelectedMonth(uniqueMonths[uniqueMonths.length - 1]);
         }
       }

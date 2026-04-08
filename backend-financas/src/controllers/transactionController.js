@@ -2,12 +2,14 @@ const { db } = require('../config/firebase');
 
 exports.createTransaction = async (req, res) => {
   try {
-    const { title, amount, type, category, userId, groupId, creditCardId } = req.body;
+    // Adicionamos a 'date' aqui na desestruturação
+    const { title, amount, type, category, userId, groupId, creditCardId, date } = req.body;
 
     let referenceMonth = "";
     
-    // Pega a data de HOJE
-    const today = new Date();
+    // Se o front-end (ou o script) mandou a data, usamos ela. Se não, usamos HOJE.
+    const today = date ? new Date(date) : new Date();
+    
     let currentMonth = today.getMonth() + 1; // getMonth() retorna de 0 a 11, então somamos 1
     let currentYear = today.getFullYear();
     const currentDay = today.getDate();
@@ -20,7 +22,7 @@ exports.createTransaction = async (req, res) => {
         const cardData = cardDoc.data();
         const closingDay = cardData.closingDay;
 
-        // Se o dia de hoje for igual ou maior que o dia de fechamento, joga pro mês que vem
+        // Se o dia da compra for igual ou maior que o dia de fechamento, joga pro mês que vem
         if (currentDay >= closingDay) {
           currentMonth += 1;
           
@@ -45,7 +47,7 @@ exports.createTransaction = async (req, res) => {
       userId,
       groupId,
       creditCardId: creditCardId || null,
-      date: new Date(), 
+      date: today, // Usa a data calculada lá em cima
       referenceMonth
     };
 
