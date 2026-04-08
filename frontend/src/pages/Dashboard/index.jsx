@@ -51,7 +51,12 @@ export function Dashboard() {
       
       if (response.ok && Array.isArray(data)) {
         // Ordena no front-end do mais novo para o mais antigo
-        const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedData = data.sort((a, b) => {
+          const tempoA = a.date._seconds ? a.date._seconds : new Date(a.date).getTime() / 1000;
+          const tempoB = b.date._seconds ? b.date._seconds : new Date(b.date).getTime() / 1000;
+          return tempoB - tempoA;
+        });
+        
         setTransactions(sortedData);
       } else {
         console.error("Erro retornado pelo back-end:", data);

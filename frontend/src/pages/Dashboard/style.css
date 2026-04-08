@@ -9,9 +9,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; 
+  gap: 15px; 
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #333; /* Uma linha sutil para o modo escuro */
+  border-bottom: 1px solid #333;
 }
 
 .header-left {
@@ -48,6 +50,7 @@
 }
 
 .btn-logout {
+  margin-left: auto; 
   background-color: #ff4d4f;
   color: white;
   border: none;
@@ -57,7 +60,7 @@
   font-weight: bold;
 }
 
-/* Formulário de Nova Transação */
+
 .transaction-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr auto;

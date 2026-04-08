@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import logoImg from '../../assets/logo.png';
-import '../Dashboard/style.css'; // Usamos o estilo global do header
+import '../Dashboard/style.css'; 
 
 export function Invoice() {
-  const { cardId } = useParams(); // Pega o ID do cartão que está na URL
+  const { cardId } = useParams(); 
   const navigate = useNavigate();
   
   const [transactions, setTransactions] = useState([]);
-  const [months, setMonths] = useState([]); // Guarda os meses que têm fatura
-  const [selectedMonth, setSelectedMonth] = useState(''); // Mês que você está olhando
+  const [months, setMonths] = useState([]); 
+  const [selectedMonth, setSelectedMonth] = useState(''); 
 
   useEffect(() => {
     fetchCardTransactions();
@@ -23,14 +23,10 @@ export function Invoice() {
       if (response.ok && Array.isArray(data)) {
         setTransactions(data);
         
-        // Extrai apenas os meses únicos que vieram do banco (ex: "04/2026", "05/2026")
         const uniqueMonths = [...new Set(data.map(t => t.referenceMonth))].filter(Boolean);
-        
-        // Ordena os meses (opcional, mas ajuda)
         uniqueMonths.sort();
         setMonths(uniqueMonths);
         
-        // Seleciona o último mês automaticamente, se existir
         if (uniqueMonths.length > 0) {
           setSelectedMonth(uniqueMonths[uniqueMonths.length - 1]);
         }
@@ -40,10 +36,21 @@ export function Invoice() {
     }
   }
 
-  // Filtra as transações para mostrar só as do mês selecionado
-  const currentInvoiceTransactions = transactions.filter(t => t.referenceMonth === selectedMonth);
+  // NOVA FUNÇÃO: Traduz a data do Firebase para o formato brasileiro
+  function formatarData(dataBanco) {
+    if (!dataBanco) return '';
+    
+    // Se for o objeto Timestamp do Firebase (tem _seconds)
+    if (dataBanco._seconds) {
+      // O JS precisa da data em milissegundos, então multiplicamos por 1000
+      return new Date(dataBanco._seconds * 1000).toLocaleDateString('pt-BR');
+    }
+    
+    // Se já for uma data normal
+    return new Date(dataBanco).toLocaleDateString('pt-BR');
+  }
 
-  // Calcula o total da fatura (soma tudo)
+  const currentInvoiceTransactions = transactions.filter(t => t.referenceMonth === selectedMonth);
   const invoiceTotal = currentInvoiceTransactions.reduce((acc, curr) => acc + curr.amount, 0);
 
   return (
@@ -56,7 +63,15 @@ export function Invoice() {
             <Link to="/cartoes" className="nav-link">Cartões e Faturas</Link>
           </nav>
         </div>
-        <button className="btn-logout" onClick={() => navigate(-1)}>Voltar</button>
+        
+        {/* CORREÇÃO DO BOTÃO: Adicionado o marginLeft: 'auto' */}
+        <button 
+          className="btn-logout" 
+          onClick={() => navigate(-1)}
+          style={{ marginLeft: 'auto' }}
+        >
+          Voltar
+        </button>
       </header>
 
       <div style={{ backgroundColor: '#2a2a2a', padding: '20px', borderRadius: '12px', color: 'white' }}>
@@ -91,7 +106,8 @@ export function Invoice() {
                   <li key={t.id} className={`transaction-item ${t.type}`}>
                     <div className="transaction-info">
                       <strong>{t.title}</strong>
-                      <span>{t.category.toUpperCase()} - {new Date(t.date).toLocaleDateString('pt-BR')}</span>
+                      {/* CORREÇÃO DA DATA: Usando a função formatarData */}
+                      <span>{t.category.toUpperCase()} - {formatarData(t.date)}</span>
                     </div>
                     <div className={`transaction-amount ${t.type}`}>
                       R$ {t.amount.toFixed(2)}
