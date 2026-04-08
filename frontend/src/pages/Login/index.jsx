@@ -19,7 +19,7 @@ export function Login() {
       const user = result.user;
 
       // 2. Manda os dados do Google para o nosso Back-end (Node.js)
-      const response = await fetch('http://localhost:3333/api/users', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

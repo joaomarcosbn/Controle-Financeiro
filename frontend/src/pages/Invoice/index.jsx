@@ -17,7 +17,7 @@ export function Invoice() {
 
   async function fetchCardTransactions() {
     try {
-      const response = await fetch(`http://localhost:3333/api/transactions/card/${cardId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/card/${cardId}`);
       const data = await response.json();
       
       if (response.ok && Array.isArray(data)) {

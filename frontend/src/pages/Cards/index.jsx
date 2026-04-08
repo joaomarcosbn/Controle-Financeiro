@@ -24,7 +24,7 @@ export function Cards() {
 
   async function fetchCards() {
     try {
-      const response = await fetch(`http://localhost:3333/api/cards/group/${groupId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cards/group/${groupId}`);
       const data = await response.json();
       if (response.ok && Array.isArray(data)) {
         setCards(data);
